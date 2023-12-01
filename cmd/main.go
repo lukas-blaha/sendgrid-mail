@@ -8,7 +8,14 @@ import (
 	"net/http"
 )
 
+type Config struct {
+	SendgridKey string
+}
+
 func main() {
+	app := Config{}
+	app.GetSendgridKey()
+
 	d := NewData()
 
 	msg := NewMsgBody(d.To, d.From, d.Subject, d.Body)
@@ -29,7 +36,7 @@ func main() {
 		log.Panic(err)
 	}
 
-	r.Header.Set("Authorization", "Bearer")
+	r.Header.Set("Authorization", fmt.Sprintf("Bearer %s", app.SendgridKey))
 	r.Header.Set("Content-Type", "application/json")
 
 	resp, err := client.Do(r)
