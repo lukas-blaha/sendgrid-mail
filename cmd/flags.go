@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"os"
@@ -41,6 +42,14 @@ func NewData() *Data {
 		fmt.Println("You have to specify sender address and recepient(s)")
 		fmt.Print("Please see help using -h or --help\n\n")
 		os.Exit(0)
+	}
+
+	if d.Body == "" {
+		sc := bufio.NewScanner(os.Stdin)
+
+		for sc.Scan() {
+			d.Body = sc.Text()
+		}
 	}
 
 	return &d
